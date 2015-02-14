@@ -9,3 +9,7 @@ aoshidoweb_bio:
 abms:
     resource: "@AoshidowebBundle/Resources/config/routing/abms.yml"
     prefix:   /abms
+
+cards:
+    resource: "@AoshidowebBundle/Resources/config/routing/cards.yml"
+    prefix:   /cards

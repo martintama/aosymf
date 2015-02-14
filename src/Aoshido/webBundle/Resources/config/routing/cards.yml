@@ -1,0 +1,3 @@
+cards_index:
+    path:     /
+    defaults: { _controller: AoshidowebBundle:Cards/Main:index }

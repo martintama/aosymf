@@ -13,6 +13,11 @@
     color: dodgerblue;
 }
 
+.greenbckg {
+    background-color: rgba(122, 186, 122, 0.9);
+    border-radius: 5%;
+}
+
 .alpha60 {
     /* Fallback for web browsers that don't support RGBa */
     background-color: rgb(0, 0, 0);
@@ -26,9 +31,9 @@
 
 .card_back{
     text-align: center;
-    background-image: url("/img/card_background3.jpg");
-    background-position-x: 0px;
-    background-position-y: 0px;
+    background-image: url("/images/card_background.jpg");
+    background-position-x: 50%;
+    background-position-y: 50%;
     border-radius: 5%;
 }
 
@@ -49,26 +54,27 @@
     border-radius: 5%;
 }
 
-.card_club{
-    background-image: url("/img/card_frontCLUB.jpg");
-}
-.card_heart{
-    background-image: url("/img/card_frontHERT.jpg");
-}
-.card_diam{
-    background-image: url("/img/card_frontDIAM.jpg");
-}
-.card_spade{
-    background-image: url("/img/card_frontSPAD.jpg");
-}
-
-.card_answer{
+.card_front_text{
     position: absolute;
     top: 75px;
     left: 20px;
     width: 160px;
     height: 100px;
 }
+
+.card_club{
+    background-image: url("/images/card_frontCLUB.jpg");
+}
+.card_heart{
+    background-image: url("/images/card_frontHERT.jpg");
+}
+.card_diam{
+    background-image: url("/images/card_frontDIAM.jpg");
+}
+.card_spade{
+    background-image: url("/images/card_frontSPAD.jpg");
+}
+
 
 .footer_text{
     text-align: center;

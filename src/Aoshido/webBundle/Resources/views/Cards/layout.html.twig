@@ -1,0 +1,14 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}Flip Cards!{% endblock %}
+{% block content %}
+    <div class="jumbotron alpha60">
+        <div class="container-fluid">
+            <h2>{% block section %} {% endblock %}</h2>
+            <div class="col-md-12">
+                {% block cards_contenido %}
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

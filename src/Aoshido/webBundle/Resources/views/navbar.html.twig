@@ -34,7 +34,7 @@
                         <span class="glyphicon glyphicon-tasks" aria-hidden="true"></span> Quiz!
                     </a>
                 </li>
-                <li class="disabled" {% block cards %} {% endblock %} ><a href="#">
+                <li {% block cards %} {% endblock %} ><a href="{{path('cards_index')}}">
                         <span class="glyphicon glyphicon-th-large" aria-hidden="true"></span> Cards
                     </a>
                 </li>
