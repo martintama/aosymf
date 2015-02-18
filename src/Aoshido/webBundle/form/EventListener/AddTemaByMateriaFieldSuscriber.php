@@ -2,6 +2,7 @@
 
 namespace Aoshido\webBundle\Form\EventListener;
 
+use Aoshido\webBundle\Form\TemaType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\PropertyAccess\PropertyAccess;
@@ -19,12 +20,16 @@ class AddTemaByMateriaFieldSuscriber implements EventSubscriberInterface {
 
     private function addTemaForm($form, $idmateria = null) {
         $formOptions = array(
-            'class' => 'AoshidowebBundle:Tema',
+            'class' => new TemaType(),
+            //'allow_add' => true,
+            //'allow_delete' => true,
+            'by_reference' => false,
+            
             'label' => 'Tema',
             'required' => true,
-            'mapped' => false,
-            'empty_value' => '- Seleccione Tema -',
-            'property' => 'descripcion',
+            'mapped' => true,
+            //'empty_value' => '- Seleccione Tema -',
+            //'property' => 'descripcion',
             'query_builder' => function (\Doctrine\ORM\EntityRepository $repository) use ($idmateria) {
                 $qb = $repository->createQueryBuilder('t')
                         ->where('t.activo=true')
@@ -62,7 +67,7 @@ class AddTemaByMateriaFieldSuscriber implements EventSubscriberInterface {
     public function preSubmit(FormEvent $event) {
         $data = $event->getData();
         $form = $event->getForm();
-        
+
         print_r($data);
         die();
         $idmateria = array_key_exists('idmateria', $data) ? $data['idmateria'] : null;

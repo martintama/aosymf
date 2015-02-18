@@ -67,9 +67,6 @@ class PreguntasController extends Controller {
         
         $form = $this->createForm(new PreguntaType(), $pregunta, array(
             'em' => $this->getDoctrine()->getManager()));
-
-        $form['temas'] = $pregunta->getTemas();
-        //$form['materia'] = $form['temas'][0]->getMateria();
         
         $form->handleRequest($request);
         

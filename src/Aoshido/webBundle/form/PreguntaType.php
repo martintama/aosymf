@@ -32,7 +32,7 @@ class PreguntaType extends AbstractType {
         ));
         
         $builder->add('temas', 'collection', array(
-            'type' => new Tematype(),
+            'type' => new TemaType(),
             'allow_add' => true,
             'allow_delete' => true,
             'by_reference' => false,
