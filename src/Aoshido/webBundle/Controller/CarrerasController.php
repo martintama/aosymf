@@ -53,7 +53,7 @@ class CarrerasController extends Controller {
         ));
     }
 
-    public function editAction(Request $request,$idCarrera) {
+    public function editAction(Request $request, $idCarrera) {
         //Display a list of all Carreras
         $carreras = $this->getDoctrine()
                 ->getRepository('AoshidowebBundle:Carrera')
@@ -73,17 +73,12 @@ class CarrerasController extends Controller {
         $carrera = $this->getDoctrine()
                 ->getRepository('AoshidowebBundle:Carrera')
                 ->find($idCarrera);
-        
+
         $form = $this->createForm(new CarreraType(), $carrera);
 
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $carrera->setActivo(TRUE);
-
-            foreach ($carrera->getMaterias() as $materia) {
-                $materia->setActivo(TRUE);
-            }
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($carrera);
@@ -92,12 +87,45 @@ class CarrerasController extends Controller {
             return $this->redirect($this->generateUrl('abms_carreras'));
         }
 
-        return $this->render('AoshidowebBundle:Carreras:new.html.twig', array(
+        return $this->render('AoshidowebBundle:Carreras:edit.html.twig', array(
                     'form' => $form->createView(),
                     'materiasxcarrera' => $materiascarrera,
                     'paginas' => $pagination,
                     'cantidad' => $cantidad,
         ));
+    }
+
+    public function disableAction($idCarrera) {
+
+        $carrera = $this->getDoctrine()
+                ->getRepository('AoshidowebBundle:Carrera')
+                ->find($idCarrera);
+
+        $carrera->setActivo(false);
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($carrera);
+
+        //Me fijo si todas sus materias tienen alguna carrera activa, si no las deshabilito
+        foreach ($carrera->getMaterias() as $materia) {
+            $todavia_tiene = FALSE;
+
+            foreach ($materia->getCarreras() as $carreras_materia) {
+                if ($carreras_materia->getActivo() && ($carreras_materia->getId() != $idCarrera)) {
+                    $todavia_tiene = TRUE;
+                }
+            }
+
+            //Si no tiene carreas activas que la referencien
+            if (!$todavia_tiene) {
+                //En un futuro deberia llamar a "materiasController->disableAction()"
+                $materia->setActivo(false);
+                $em->persist($materia);
+            }
+        }
+        $em->flush();
+
+        return $this->redirect($this->generateUrl('abms_carreras'));
     }
 
 }

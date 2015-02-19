@@ -20,33 +20,34 @@ class AddTemaByMateriaFieldSuscriber implements EventSubscriberInterface {
 
     private function addTemaForm($form, $idmateria = null) {
         $formOptions = array(
-            'class' => new TemaType(),
-            //'allow_add' => true,
-            //'allow_delete' => true,
+            'type' => new TemaType(),
+            'allow_add' => true,
+            'allow_delete' => true,
             'by_reference' => false,
-            
             'label' => 'Tema',
             'required' => true,
-            'mapped' => true,
-            //'empty_value' => '- Seleccione Tema -',
+            'mapped' => false,
+            //'placeholder' => '- Seleccione Tema -',
             //'property' => 'descripcion',
-            'query_builder' => function (\Doctrine\ORM\EntityRepository $repository) use ($idmateria) {
-                $qb = $repository->createQueryBuilder('t')
-                        ->where('t.activo=true')
-                        ->innerJoin('t.materia', 'm')
-                        ->andWhere('m.activo=true')
-                        ->andWhere('m=:idmateria')
-                        ->setParameter('idmateria', $idmateria)
-                        ->addOrderBy('t.descripcion', 'ASC');
-                return $qb;
-            }
+            /*'options' => array(
+                'query_builder' => function (\Doctrine\ORM\EntityRepository $repository) use ($idmateria) {
+                    $qb = $repository->createQueryBuilder('t')
+                            ->where('t.activo=true')
+                            ->innerJoin('t.materia', 'm')
+                            ->andWhere('m.activo=true')
+                            ->andWhere('m=:idmateria')
+                            ->setParameter('idmateria', $idmateria)
+                            ->addOrderBy('t.descripcion', 'ASC');
+                    return $qb;
+                }
+            )*/
         );
 
         if ($idmateria) {
             $formOptions['data'] = $idmateria;
         }
 
-        $form->add('idtema', 'entity', $formOptions);
+        $form->add('idtema', 'collection', $formOptions);
     }
 
     public function preSetData(FormEvent $event) {

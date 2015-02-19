@@ -7,6 +7,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 //use Aoshido\webBundle\Form\DataTransformer\MateriaToStringTransformer;
+
+use Aoshido\webBundle\Form\EventListener\AddCarreraFieldSuscriber;
 use Aoshido\webBundle\Form\EventListener\AddMateriaByCarreraFieldSuscriber;
 use Aoshido\webBundle\Form\EventListener\AddTemaByMateriaFieldSuscriber;
 
@@ -19,24 +21,6 @@ class PreguntaType extends AbstractType {
         $builder->add('contenido', 'text', array(
             'label' => 'Pregunta:',
         ));
-                        
-        $builder->add('idcarrera', 'entity', array(
-            'class' => 'AoshidowebBundle:Carrera',
-            'label' => 'Carrera:',
-            'mapped' => false,
-            'required' => false,
-            'expanded' => false,
-            'multiple' => false,
-            'property' => 'descripcion',
-            'empty_value' => '- Seleccione Carrera -',
-        ));
-        
-        $builder->add('temas', 'collection', array(
-            'type' => new TemaType(),
-            'allow_add' => true,
-            'allow_delete' => true,
-            'by_reference' => false,
-        ));
 
         $builder->add('save', 'submit', array(
             'label' => 'Agregar Pregunta',
@@ -44,6 +28,8 @@ class PreguntaType extends AbstractType {
                 'class' => 'btn btn-success'
             ),
         ));
+        
+        $builder->addEventSubscriber(new AddCarreraFieldSuscriber());
         $builder->addEventSubscriber(new AddMateriaByCarreraFieldSuscriber());
         $builder->addEventSubscriber(new AddTemaByMateriaFieldSuscriber());
     }
