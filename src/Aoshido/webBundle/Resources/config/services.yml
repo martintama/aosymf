@@ -5,4 +5,7 @@ services:
     my.subscriber:
         class: Aoshido\webBundle\form\EventListener\AddTemaByMateriaFieldSuscriber 
         arguments:
-            [ '@doctrine.orm.entity_manager' ]
+            - @doctrine.orm.entity_manager
+            
+    my.form:
+        class: Aoshido\webBundle\form\PreguntaType

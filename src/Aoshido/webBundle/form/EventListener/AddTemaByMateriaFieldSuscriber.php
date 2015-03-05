@@ -8,13 +8,14 @@ use Symfony\Component\form\FormEvents;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\EntityManager;
 
 class AddTemaByMateriaFieldSuscriber implements EventSubscriberInterface {
 
-    private $entityManager;
-
-    public function __construct($entityManager) {
-        $this->em = $entityManager;
+    protected $entityManager;
+    
+    public function __construct(EntityManager $entityManager) {
+        $this->entityManager = $entityManager;
     }
 
     public static function getSubscribedEvents() {
