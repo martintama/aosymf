@@ -7,13 +7,13 @@ use Symfony\Component\form\FormEvent;
 use Symfony\Component\form\FormEvents;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityRepository;
 
 class AddTemaByMateriaFieldSuscriber implements EventSubscriberInterface {
 
     protected $entityManager;
-    
+
     public function __construct(EntityManager $entityManager) {
         $this->entityManager = $entityManager;
     }
@@ -27,8 +27,20 @@ class AddTemaByMateriaFieldSuscriber implements EventSubscriberInterface {
 
     private function addTemaForm($form, $idmateria = null) {
 
+        //Esto es lo que usabamos cuando era una entity y no una collection
+        /*$temas_filtrados = function (\Doctrine\ORM\EntityRepository $repository) use ($idmateria) {
+            $qb = $repository->createQueryBuilder('t')
+                    ->where('t.activo=true')
+                    ->innerJoin('t.materia', 'm')
+                    ->andWhere('m.activo=true')
+                    ->andWhere('m=:idmateria')
+                    ->setParameter('idmateria', $idmateria)
+                    ->addOrderBy('t.descripcion', 'ASC');
+            return ($qb->getQuery()->getResult());
+        };*/
+
         $qb = $this->entityManager
-                ->getRepository('AoshidowebBundle:Temas')
+                ->getRepository('AoshidowebBundle:Tema')
                 ->createQueryBuilder('t')
                 ->where('t.activo=true')
                 ->innerJoin('t.materia', 'm')
@@ -39,17 +51,6 @@ class AddTemaByMateriaFieldSuscriber implements EventSubscriberInterface {
 
         $temas_filtrados = $qb->getQuery()->getResult();
 
-        /* $temas_filtrados = function (\Doctrine\ORM\EntityRepository $repository) use ($idmateria) {
-          $qb = $repository->createQueryBuilder('t')
-          ->where('t.activo=true')
-          ->innerJoin('t.materia', 'm')
-          ->andWhere('m.activo=true')
-          ->andWhere('m=:idmateria')
-          ->setParameter('idmateria', $idmateria)
-          ->addOrderBy('t.descripcion', 'ASC');
-          return ($qb->getQuery()->getResult());
-          }; */
-
         $formOptions = array(
             'type' => new TemaType(),
             'allow_add' => true,
@@ -59,9 +60,9 @@ class AddTemaByMateriaFieldSuscriber implements EventSubscriberInterface {
             'required' => true,
             'mapped' => false,
             //'placeholder' => '- Seleccione Tema -',
-//'property' => 'descripcion',
+            //'property' => 'descripcion',
             'options' => array(
-                'choice33s' => $temas_filtrados
+                'choices' => $temas_filtrados
             )
         );
 

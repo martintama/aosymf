@@ -24,7 +24,9 @@ class PreguntasController extends Controller {
         $cantidad = count($preguntas);
 
         $pregunta = new Pregunta();
-        $form = $this->createForm(new PreguntaType(), $pregunta, array(
+        
+        //$form = ;
+        $form = $this->createForm($this->get('my.form'), $pregunta, array(
             'em' => $this->getDoctrine()->getManager()));
 
         $form->handleRequest($request);

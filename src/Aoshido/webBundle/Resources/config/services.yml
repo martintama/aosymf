@@ -8,4 +8,7 @@ services:
             - @doctrine.orm.entity_manager
             
     my.form:
-        class: Aoshido\webBundle\form\PreguntaType
+        class: Aoshido\webBundle\form\PreguntaType 
+        arguments:
+            - @my.subscriber
+        
