@@ -74,7 +74,8 @@
                 <div class="form-group">
                     {{ form_errors(form.idtema) }}
                     {{ form_label(form.idtema,null,{ 'label_attr' : { 'class' : 'col-md-2 control-label' } }) }}
-                    <div class="col-md-6">
+                    <div id="anchor" class="col-md-6">
+                        {{ dump(form.idtema) }}
                         {{ form_widget(form.idtema,{ 'attr' : { 'class' : 'form-control' } }) }}
                     </div>
                 </div>    
@@ -145,8 +146,8 @@
                 url: '{{ path("preguntas_addTemas") }}',
                 data: data,
                 success: function (data) {
-                    var tema_selector = $("select[id$='idtema']");
-
+                    var tema_selector = $("select[id$='idtema___name__']");
+                    alert("cafrsda");
                     tema_selector.html('<option value="">- Seleccione Tema -</option>');
 
                     for (var i = 0, total = data.length; i < total; i++) {

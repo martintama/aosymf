@@ -1,31 +1,35 @@
 <?php
 
-namespace Aoshido\webBundle\form\EventListener;
+namespace Aoshido\webBundle\Form\EventListener;
 
-use Aoshido\webBundle\form\TemaType;
-use Symfony\Component\form\FormEvent;
-use Symfony\Component\form\FormEvents;
+use Aoshido\webBundle\Form\TemaType;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 
-class AddTemaByMateriaFieldSuscriber implements EventSubscriberInterface {
+class AddTemaByMateriaFieldSuscriber implements EventSubscriberInterface
+{
 
     protected $entityManager;
 
-    public function __construct(EntityManager $entityManager) {
+    public function __construct(EntityManager $entityManager)
+    {
         $this->entityManager = $entityManager;
     }
 
-    public static function getSubscribedEvents() {
+    public static function getSubscribedEvents()
+    {
         return array(
             FormEvents::PRE_SET_DATA => 'preSetData',
             FormEvents::PRE_SUBMIT => 'preSubmit'
         );
     }
 
-    private function addTemaForm($form, $idmateria = null) {
+    private function addTemaForm($form, $idmateria = null)
+    {
 
         //Esto es lo que usabamos cuando era una entity y no una collection
         /*$temas_filtrados = function (\Doctrine\ORM\EntityRepository $repository) use ($idmateria) {
@@ -40,30 +44,30 @@ class AddTemaByMateriaFieldSuscriber implements EventSubscriberInterface {
         };*/
 
         $qb = $this->entityManager
-                ->getRepository('AoshidowebBundle:Tema')
-                ->createQueryBuilder('t')
-                ->where('t.activo=true')
-                ->innerJoin('t.materia', 'm')
-                ->andWhere('m.activo=true')
-                ->andWhere('m=:idmateria')
-                ->setParameter('idmateria', $idmateria)
-                ->addOrderBy('t.descripcion', 'ASC');
+            ->getRepository('AoshidowebBundle:Tema')
+            ->createQueryBuilder('t')
+            ->where('t.activo=true')
+            ->innerJoin('t.materia', 'm')
+            ->andWhere('m.activo=true')
+            ->andWhere('m=:idmateria')
+            ->setParameter('idmateria', $idmateria)
+            ->addOrderBy('t.descripcion', 'ASC');
 
         $temas_filtrados = $qb->getQuery()->getResult();
 
         $formOptions = array(
-            'type' => new TemaType(),
+            'type' => 'tema_select',
             'allow_add' => true,
             'allow_delete' => true,
-            'by_reference' => false,
             'label' => 'Tema',
             'required' => true,
             'mapped' => false,
-            //'placeholder' => '- Seleccione Tema -',
-            //'property' => 'descripcion',
-            'options' => array(
-                'attr' => $temas_filtrados
+            'options' => (
+            array('choices' => $temas_filtrados,
+
+                'property_path' => 'descripcion')
             )
+
         );
 
         if ($idmateria) {
@@ -73,7 +77,8 @@ class AddTemaByMateriaFieldSuscriber implements EventSubscriberInterface {
         $form->add('idtema', 'collection', $formOptions);
     }
 
-    public function preSetData(FormEvent $event) {
+    public function preSetData(FormEvent $event)
+    {
         $data = $event->getData();
         $form = $event->getForm();
 
@@ -88,7 +93,8 @@ class AddTemaByMateriaFieldSuscriber implements EventSubscriberInterface {
         $this->addTemaForm($form);
     }
 
-    public function preSubmit(FormEvent $event) {
+    public function preSubmit(FormEvent $event)
+    {
         $data = $event->getData();
         $form = $event->getForm();
 

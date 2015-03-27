@@ -1,28 +1,25 @@
 <?php
 
-namespace Aoshido\webBundle\form;
+namespace Aoshido\webBundle\Form;
 
-use Aoshido\webBundle\form\TemaType;
-use Symfony\Component\form\AbstractType;
-use Symfony\Component\form\FormBuilderInterface;
+use Aoshido\webBundle\Form\TemaType;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 //use Aoshido\webBundle\Form\DataTransformer\MateriaToStringTransformer;
-use Aoshido\webBundle\form\EventListener\AddCarreraFieldSuscriber;
-use Aoshido\webBundle\form\EventListener\AddMateriaByCarreraFieldSuscriber;
-use Aoshido\webBundle\form\EventListener\AddTemaByMateriaFieldSuscriber;
+use Aoshido\webBundle\Form\EventListener\AddCarreraFieldSuscriber;
+use Aoshido\webBundle\Form\EventListener\AddMateriaByCarreraFieldSuscriber;
+use Aoshido\webBundle\Form\EventListener\AddTemaByMateriaFieldSuscriber;
 
 class PreguntaType extends AbstractType {
 
-    protected $temaSubscriber;
 
-    public function __construct(\Aoshido\webBundle\form\EventListener\AddTemaByMateriaFieldSuscriber $temaSubscriber) {
-        $this->temaSubscriber = $temaSubscriber;
-    }
 
     public function buildForm(FormBuilderInterface $builder, array $options) {
-        /* $entityManager = $options['em'];
 
-          $materiatransformer = new MateriaToStringTransformer($entityManager); */
+        $entityManager = $options['em'];
+
+         // $materiatransformer = new MateriaToStringTransformer($entityManager);
         $builder->add('contenido', 'text', array(
             'label' => 'Pregunta:',
         ));
@@ -37,8 +34,8 @@ class PreguntaType extends AbstractType {
         $builder->addEventSubscriber(new AddCarreraFieldSuscriber());
         $builder->addEventSubscriber(new AddMateriaByCarreraFieldSuscriber());
 
-        $builder->addEventSubscriber($this->temaSubscriber);
-        //$builder->addEventSubscriber(new AddTemaByMateriaFieldSuscriber());
+        //$builder->addEventSubscriber($this->temaSubscriber);
+        $builder->addEventSubscriber(new AddTemaByMateriaFieldSuscriber($entityManager));
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver) {

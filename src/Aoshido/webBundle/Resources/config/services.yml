@@ -3,12 +3,16 @@ services:
 #        class: Aoshido\webBundle\Example
 #        arguments: [@service_id, "plain_value", %parameter%]
     my.subscriber:
-        class: Aoshido\webBundle\form\EventListener\AddTemaByMateriaFieldSuscriber 
+        class: Aoshido\webBundle\Form\EventListener\AddTemaByMateriaFieldSuscriber
         arguments:
             - @doctrine.orm.entity_manager
-            
+
     my.form:
-        class: Aoshido\webBundle\form\PreguntaType 
-        arguments:
-            - @my.subscriber
-        
+        class: Aoshido\webBundle\Form\PreguntaType
+
+
+    my.type.tema_select:
+        class: Aoshido\webBundle\Form\TemaSelectType
+        arguments: [@doctrine.orm.entity_manager]
+        tags:
+          - { name: form.type, alias: tema_select }
