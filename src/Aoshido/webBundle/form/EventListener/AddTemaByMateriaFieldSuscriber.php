@@ -62,7 +62,7 @@ class AddTemaByMateriaFieldSuscriber implements EventSubscriberInterface {
             //'placeholder' => '- Seleccione Tema -',
             //'property' => 'descripcion',
             'options' => array(
-                'choices' => $temas_filtrados
+                'attr' => $temas_filtrados
             )
         );
 
