@@ -25,6 +25,7 @@ class GamesController extends Controller {
 
         if ($form->isValid()) {
             foreach ($pregunta->getTemas() as $tema) {
+                
                 $preguntas_temp = $tema->getPreguntas();
                 foreach ($preguntas_temp as $pregunta_temp) {
                     if ($pregunta_temp != $pregunta && !$preguntas->contains($pregunta_temp)) {
@@ -61,10 +62,9 @@ class GamesController extends Controller {
         $form = $this->createForm(new PreguntaFilterType(), NULL, array(
             'method' => 'GET',
         ));
-
+                
         $form->handleRequest($request);
-dump($form);
-die();
+
         /* $paginator = $this->get('knp_paginator');
           $pagination = $paginator->paginate($preguntas, $this->getRequest()->query->get('page', 1), 4);
           $pagination->setPageRange(6);

@@ -41,7 +41,9 @@
         </div>
     </div>
     #}
-    {% include 'AoshidowebBundle:Games:settings.html.twig' with {'form': form} %}
+    {{form(form)}}
+    
+    {# include 'AoshidowebBundle:Games:settings.html.twig' with {'form': form} #}
     
 {% endblock %}
 
