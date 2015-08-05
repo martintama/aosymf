@@ -4,13 +4,14 @@ namespace Aoshido\webBundle\Controller;
 
 use Aoshido\webBundle\Entity\Pregunta;
 use Aoshido\webBundle\Form\PreguntaType;
+use Aoshido\webBundle\Filter\PreguntaFilterType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Doctrine\Common\Collections\ArrayCollection;
 
 class GamesController extends Controller {
 
-    public function quizAction(Request $request) {
+    public function cardsAction(Request $request) {
 
         $pregunta = new Pregunta();
 
@@ -53,6 +54,29 @@ class GamesController extends Controller {
                 ));
         }
         return $this->redirect($this->generateUrl('abms_preguntas'));
+    }
+
+    public function quizAction(Request $request) {
+
+        $form = $this->createForm(new PreguntaFilterType(), NULL, array(
+            'method' => 'GET',
+        ));
+
+        $form->handleRequest($request);
+dump($form);
+die();
+        /* $paginator = $this->get('knp_paginator');
+          $pagination = $paginator->paginate($preguntas, $this->getRequest()->query->get('page', 1), 4);
+          $pagination->setPageRange(6);
+
+          $cantidad = count($preguntas); */
+
+
+        return $this->render('AoshidowebBundle:Games:quiz.html.twig', array(
+                    'form' => $form->createView(),
+/*                    'paginas' => $pagination,
+                    'cantidad' => $cantidad,*/
+        ));
     }
 
 }

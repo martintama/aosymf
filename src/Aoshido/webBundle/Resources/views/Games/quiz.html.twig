@@ -3,6 +3,7 @@
 {% block title %}Quiz! {% endblock %}
 {% block section %}Quiz! {% endblock %}
 {% block games_contenido %} 
+    {#
     <div class="container col-md-12">
         <div class="panel panel-primary">
             <div class="panel-heading text-right">Preguntas Disponibles: {{ cantidad }}</div>
@@ -39,7 +40,9 @@
             {% endif %}
         </div>
     </div>
-    {{ render(controller('AoshidowebBundle:Games:settings')) }}
+    #}
+    {% include 'AoshidowebBundle:Games:settings.html.twig' with {'form': form} %}
+    
 {% endblock %}
 
 {% block javascripts %} 
