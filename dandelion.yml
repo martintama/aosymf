@@ -1,0 +1,13 @@
+adapter: ftp
+host: ftp.aoshido.com.ar
+username: myosotis@aoshido.com.ar
+password: Myosotis777
+path: /
+passive: true
+insecure: true 
+
+exclude:
+    - .gitignore
+    - dandelion.yml
+
+additional:
